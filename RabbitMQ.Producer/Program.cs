@@ -1,21 +1,24 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Json;
 using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ.Client;
+using RabbitMQ.Wrapper.Extensions;
 using RabbitMQ.Wrapper.Interfaces;
 using RabbitMQ.Wrapper.Models;
 using RabbitMQ.Wrapper.Services;
 using System;
 using System.Text;
 using System.Text.Json;
-using RabbitMQ.Wrapper.Extensions;
+using System.Threading;
 
-namespace RabbitMQ.Listener
+namespace RabbitMQ
 {
     internal class Program
     {
         private static IConfiguration Configuration { get; set; }
         private static IServiceProvider _services;
         private static IServiceCollection _servicesCollection;
+
         static void Main(string[] args)
         {
             // configures the app
@@ -29,8 +32,9 @@ namespace RabbitMQ.Listener
                 QueueName = Configuration["ProducerSettings:QueueName"],
                 RoutingKey = Configuration["ProducerSettings:RoutingKey"]
             };
-
-            ScopeSettings consumerSettings = new ScopeSettings {
+            
+            ScopeSettings consumerSettings = new ScopeSettings
+            {
                 ExchangeName = Configuration["ConsumerSettings:ExchangeName"],
                 ExchangeType = Configuration["ConsumerSettings:ExchangeType"],
                 QueueName = Configuration["ConsumerSettings:QueueName"],
@@ -41,17 +45,11 @@ namespace RabbitMQ.Listener
             IMessageService messageService = _services.GetService<IMessageService>();
 
             messageService.SetMessageService(producerSettings, consumerSettings);
-            messageService.MessageReceived += MessageService_MessageReceived;
+            messageService.SendDataToQueue(Encoding.UTF8.GetBytes("Finished!"));
 
             Console.ReadLine();
 
             messageService.Dispose();
-        }
-
-        private static void MessageService_MessageReceived(string message)
-        {
-            // var message = Encoding.UTF8.GetString(body);
-            Console.WriteLine(message);
         }
 
         static void AppConfigure()
@@ -66,6 +64,7 @@ namespace RabbitMQ.Listener
             _servicesCollection = new ServiceCollection();
             _servicesCollection.AddRabbitMQService(uri);
             _services = _servicesCollection.BuildServiceProvider();
+            
         }
     }
 }

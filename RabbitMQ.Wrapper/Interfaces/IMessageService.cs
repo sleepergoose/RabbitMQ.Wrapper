@@ -11,9 +11,7 @@ namespace RabbitMQ.Wrapper.Interfaces
 
         void SetMessageService(ScopeSettings producerSettings, ScopeSettings consumerSettings);
 
-        void SendStringMessageToQueue(string message);
-
-        void SendMessageToQueue(byte[] body);
+        void SendDataToQueue(byte[] body);
 
         void ListenQueue(Object model, BasicDeliverEventArgs ea);
 
