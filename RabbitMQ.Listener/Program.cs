@@ -7,6 +7,7 @@ using RabbitMQ.Wrapper.Services;
 using System;
 using System.Text;
 using System.Text.Json;
+using RabbitMQ.Wrapper.Extensions;
 
 namespace RabbitMQ.Listener
 {
@@ -14,7 +15,7 @@ namespace RabbitMQ.Listener
     {
         private static IConfiguration Configuration { get; set; }
         private static IServiceProvider _services;
-
+        private static IServiceCollection _servicesCollection;
         static void Main(string[] args)
         {
             // configures the app
@@ -62,19 +63,9 @@ namespace RabbitMQ.Listener
             var uri = Configuration.GetSection("RabbitMQUri").Value;
 
             // DI
-            _services = new ServiceCollection()
-                .AddScoped<IProducer, Producer>()
-                .AddScoped<IConsumer, Consumer>()
-                .AddScoped<IProducerScope, ProducerScope>()
-                .AddScoped<IConsumerScope, ConsumerScope>()
-                .AddScoped<IProducerScopeFactory, ProducerScopeFactory>()
-                .AddScoped<IConsumerScopeFactory, ConsumerScopeFactory>()
-                .AddScoped<IMessageQueue, MessageQueue>()
-                .AddScoped<IMessageService, MessageService>()
-                .AddScoped<RabbitConnectionFactory>()
-                .AddScoped<IConnectionFactory>(provider => 
-                    new RabbitConnectionFactory(new Uri(uri)).ConnectionFactory)
-                .BuildServiceProvider();
+            _servicesCollection = new ServiceCollection();
+            _servicesCollection.AddRabbitMQService(uri);
+            _services = _servicesCollection.BuildServiceProvider();
         }
     }
 }

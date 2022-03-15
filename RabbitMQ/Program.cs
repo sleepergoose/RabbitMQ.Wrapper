@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration.Json;
 using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ.Client;
+using RabbitMQ.Wrapper.Extensions;
 using RabbitMQ.Wrapper.Interfaces;
 using RabbitMQ.Wrapper.Models;
 using RabbitMQ.Wrapper.Services;
@@ -16,6 +17,7 @@ namespace RabbitMQ
     {
         private static IConfiguration Configuration { get; set; }
         private static IServiceProvider _services;
+        private static IServiceCollection _servicesCollection;
 
         static void Main(string[] args)
         {
@@ -61,18 +63,10 @@ namespace RabbitMQ
             var uri = Configuration.GetSection("RabbitMQUri").Value;
 
             // DI
-            _services = new ServiceCollection()
-                .AddScoped<IProducer, Producer>()
-                .AddScoped<IConsumer, Consumer>()
-                .AddScoped<IProducerScope, ProducerScope>()
-                .AddScoped<IConsumerScope, ConsumerScope>()
-                .AddScoped<IProducerScopeFactory, ProducerScopeFactory>()
-                .AddScoped<IConsumerScopeFactory, ConsumerScopeFactory>()
-                .AddScoped<IMessageQueue, MessageQueue>()
-                .AddScoped<IMessageService, MessageService>()
-                .AddScoped<IConnectionFactory>(provider => 
-                    new RabbitConnectionFactory(new Uri(uri)).ConnectionFactory)
-                .BuildServiceProvider();
+            _servicesCollection = new ServiceCollection();
+            _servicesCollection.AddRabbitMQService(uri);
+            _services = _servicesCollection.BuildServiceProvider();
+            
         }
     }
 }
