@@ -4,7 +4,7 @@ using RabbitMQ.Wrapper.Interfaces;
 
 namespace RabbitMQ.Wrapper.Services
 {
-    public class ProducerScopeFactory : IProducerScopeFactory
+    internal class ProducerScopeFactory : IProducerScopeFactory
     {
         private readonly IConnectionFactory _connectionFactory;
 

@@ -3,7 +3,7 @@ using System;
 
 namespace RabbitMQ.Wrapper.Services
 {
-    public class RabbitConnectionFactory
+    internal class RabbitConnectionFactory
     {
         public ConnectionFactory ConnectionFactory { get; set; }
 

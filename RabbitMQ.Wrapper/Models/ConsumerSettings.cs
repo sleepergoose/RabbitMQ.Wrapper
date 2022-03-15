@@ -2,7 +2,7 @@
 
 namespace RabbitMQ.Wrapper.Models
 {
-    public class ConsumerSettings
+    internal class ConsumerSettings
     {
         public bool SequentialFetch { get; set; }
 

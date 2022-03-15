@@ -4,7 +4,7 @@ using RabbitMQ.Wrapper.Models;
 
 namespace RabbitMQ.Wrapper.Services
 {
-    public class MessageQueue : IMessageQueue
+    internal class MessageQueue : IMessageQueue
     {
         private readonly IConnection _connection;
 

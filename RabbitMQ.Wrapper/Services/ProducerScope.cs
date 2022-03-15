@@ -5,7 +5,7 @@ using RabbitMQ.Wrapper.Interfaces;
 
 namespace RabbitMQ.Wrapper.Services
 {
-    public class ProducerScope : IProducerScope
+    internal class ProducerScope : IProducerScope
     {
         // Fields
         private readonly ScopeSettings _ScopeSettings;

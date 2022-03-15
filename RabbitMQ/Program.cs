@@ -46,8 +46,6 @@ namespace RabbitMQ
 
             messageService.SetMessageService(producerSettings, consumerSettings);
             messageService.SendStringMessageToQueue("Hello!!!!!!");
-            Thread.Sleep(3000);
-            messageService.SendMessageToQueue(Encoding.UTF8.GetBytes("from byte"));
 
             Console.ReadLine();
 

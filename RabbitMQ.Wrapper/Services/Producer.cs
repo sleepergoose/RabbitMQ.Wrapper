@@ -12,7 +12,7 @@ namespace RabbitMQ.Wrapper.Services
     /// <summary>
     /// Producer - describes an object for transmiting data
     /// </summary>
-    public class Producer : IProducer
+    internal class Producer : IProducer
     {
         private readonly ProducerSettings _producerSettings;
         private readonly IBasicProperties _basicProperties;

@@ -6,7 +6,7 @@ using RabbitMQ.Wrapper.Services;
 
 namespace RabbitMQ.Wrapper.Services
 {
-    public class ConsumerScope : IConsumerScope
+    internal class ConsumerScope : IConsumerScope
     {
         // Fields
         private readonly ScopeSettings _messageScopeSettings;

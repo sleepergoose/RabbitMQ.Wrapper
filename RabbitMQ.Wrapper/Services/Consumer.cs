@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace RabbitMQ.Wrapper.Services
 {
-    public class Consumer : IConsumer
+    internal class Consumer : IConsumer
     {
         private readonly ConsumerSettings _consumerSettings;
         private readonly EventingBasicConsumer _consumer;
